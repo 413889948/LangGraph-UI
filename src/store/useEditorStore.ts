@@ -10,6 +10,28 @@
 
 import { create } from 'zustand';
 import { EdgeUpdate, GraphDocument, GraphEdge, ViewportState, GraphNode, StateField, StateFieldUpdate } from '../types';
+
+// localStorage key for locale persistence
+const LOCALE_STORAGE_KEY = 'langgraph-editor-locale';
+
+// Supported locales
+export type Locale = 'zh' | 'en';
+
+/**
+ * Get stored locale or default to Chinese
+ */
+function getStoredLocale(): Locale {
+  try {
+    const stored = localStorage.getItem(LOCALE_STORAGE_KEY);
+    if (stored === 'zh' || stored === 'en') {
+      return stored;
+    }
+  } catch {
+    // localStorage not available
+  }
+  return 'zh'; // Default to Chinese
+}
+
 /**
  * Editor state interface
  */
@@ -26,6 +48,9 @@ interface EditorState {
   
   // Persistence tracking
   isDirty: boolean;
+  
+  // i18n state
+  locale: Locale;
 }
 
 /**
@@ -74,7 +99,11 @@ interface EditorActions {
   // Persistence operations
   markDirty: () => void;
   markClean: () => void;
+  
+  // i18n operations
+  setLocale: (locale: Locale) => void;
 }
+
 /**
  * Initial viewport state
  */
@@ -114,6 +143,7 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
   selectedElementId: null,
   viewport: { ...INITIAL_VIEWPORT },
   isDirty: false,
+  locale: getStoredLocale(),
   
   // Graph document operations
   setGraphDocument: (doc) => {
@@ -400,6 +430,16 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
     const state = get();
     return state.graphDocument?.stateSchema.fields.find((field) => field.id === fieldId);
   },
+  
+  // i18n operations
+  setLocale: (locale) => {
+    set({ locale });
+    try {
+      localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+    } catch {
+      // localStorage not available
+    }
+  },
 }));
 
 /**
@@ -411,6 +451,7 @@ export const selectSelectedNodeId = (state: EditorState) => state.selectedNodeId
 export const selectSelectedElementId = (state: EditorState) => state.selectedElementId;
 export const selectViewport = (state: EditorState) => state.viewport;
 export const selectIsDirty = (state: EditorState) => state.isDirty;
+export const selectLocale = (state: EditorState) => state.locale;
 
 /**
  * Selector to check if a node is selected

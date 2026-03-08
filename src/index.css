@@ -48,6 +48,48 @@ body {
   font-weight: 400;
 }
 
+/* Header content layout */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-title {
+  text-align: left;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Language Switcher styles */
+.language-switcher {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 70px;
+}
+
+.language-switcher:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.language-switcher:active {
+  background: #d1d5db;
+}
+
 .app-main {
   flex: 1;
   display: flex;

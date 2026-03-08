@@ -1,22 +1,13 @@
 import React from 'react';
 import { useEditorStore } from '../store/useEditorStore';
 import type { NodeType, FieldType } from '../types';
+import { useTranslation } from '../i18n';
 
 /**
  * NodeConfigPanel - Right sidebar panel for node configuration
- * 
- * MVP Implementation (Task 4.1):
- * - Shows empty state when no node is selected
- * - Shows basic node info placeholder when a node is selected
- * - Integrates with existing selection state from store
- * 
- * Future tasks (4.2-4.8) will add:
- * - Node name and type editing
- * - Input/output parameter management
- * - Parameter property editing
- * - Validation and bidirectional sync
  */
 export const NodeConfigPanel: React.FC = () => {
+  const { t } = useTranslation();
   const selectedNode = useEditorStore((state) => state.getSelectedNode());
   const updateNode = useEditorStore((state) => state.updateNode);
 
@@ -25,13 +16,13 @@ export const NodeConfigPanel: React.FC = () => {
     return (
       <aside className="node-config-panel">
         <div className="node-config-panel-header">
-          <h3>Node Configuration</h3>
+          <h3>{t('node.config.title')}</h3>
         </div>
         <div className="node-config-panel-content">
           <div className="config-empty-state">
-            <p className="empty-state-title">No Node Selected</p>
+            <p className="empty-state-title">{t('node.emptyState.title')}</p>
             <p className="empty-state-description">
-              Click on a node in the canvas to view and edit its configuration.
+              {t('node.emptyState.description')}
             </p>
           </div>
         </div>
@@ -145,14 +136,13 @@ export const NodeConfigPanel: React.FC = () => {
     });
   };
 
-
   // Helper function to find duplicate parameter names
   const findDuplicateNames = (names: string[]): Set<string> => {
     const duplicates = new Set<string>();
     const seen = new Set<string>();
     
     for (const name of names) {
-      if (name.trim() === '') continue; // Skip empty names
+      if (name.trim() === '') continue;
       if (seen.has(name)) {
         duplicates.add(name);
       } else {
@@ -171,35 +161,33 @@ export const NodeConfigPanel: React.FC = () => {
   const outputParamNames = selectedNode.data.outputs?.map(o => o.name) || [];
   const duplicateOutputNames = findDuplicateNames(outputParamNames);
 
-
-  // Node is selected - show configuration form
   // Node is selected - show configuration form
   return (
     <aside className="node-config-panel">
       <div className="node-config-panel-header">
-        <h3>Node Configuration</h3>
+        <h3>{t('node.config.title')}</h3>
       </div>
       <div className="node-config-panel-content">
         <div className="config-node-info">
           <div className="info-section">
-            <h4>Basic Information</h4>
+            <h4>{t('node.config.basicInfo')}</h4>
             
             {/* Name Input */}
             <div className="form-group">
-              <label htmlFor="node-name">Name</label>
+              <label htmlFor="node-name">{t('node.config.name')}</label>
               <input
                 id="node-name"
                 type="text"
                 className="form-input"
                 value={selectedNode.data.name || selectedNode.data.label || ''}
                 onChange={handleNameChange}
-                placeholder="Enter node name"
+                placeholder={t('node.config.name')}
               />
             </div>
 
             {/* Type Dropdown */}
             <div className="form-group">
-              <label htmlFor="node-type">Type</label>
+              <label htmlFor="node-type">{t('node.config.type')}</label>
               <select
                 id="node-type"
                 className="form-select"
@@ -214,13 +202,13 @@ export const NodeConfigPanel: React.FC = () => {
           </div>
 
           <div className="info-section">
-            <h4>Node Info</h4>
+            <h4>{t('node.config.nodeInfo')}</h4>
             <div className="info-row">
-              <span className="info-label">ID:</span>
+              <span className="info-label">{t('node.config.id')}:</span>
               <span className="info-value">{selectedNode.id}</span>
             </div>
             <div className="info-row">
-              <span className="info-label">Position:</span>
+              <span className="info-label">{t('node.config.position')}:</span>
               <span className="info-value">
                 ({Math.round(selectedNode.position.x)}, {Math.round(selectedNode.position.y)})
               </span>
@@ -228,32 +216,24 @@ export const NodeConfigPanel: React.FC = () => {
           </div>
 
           <div className="info-section">
-            <h4>Input Parameters</h4>
+            <h4>{t('node.config.inputParams')}</h4>
             <div className="parameters-list">
               {selectedNode.data.parameters && selectedNode.data.parameters.length > 0 ? (
                 selectedNode.data.parameters.map((param, index) => (
-                    <div className="parameter-item">
+                  <div key={index} className="parameter-item">
                     <div className="parameter-row">
                       <input
                         type="text"
                         className={`form-input parameter-name-input ${duplicateInputNames.has(param.name) && param.name.trim() !== '' ? 'input-error' : ''}`}
                         value={param.name}
                         onChange={(e) => handleParameterNameChange(index, e.target.value)}
-                        placeholder="Parameter name"
-                      />
-                    <div className="parameter-row">
-                      <input
-                        type="text"
-                        className="form-input parameter-name-input"
-                        value={param.name}
-                        onChange={(e) => handleParameterNameChange(index, e.target.value)}
-                        placeholder="Parameter name"
+                        placeholder={t('node.config.paramName')}
                       />
                       <button
                         type="button"
                         className="btn-icon btn-delete"
                         onClick={() => handleDeleteParameter(index)}
-                        title="Delete parameter"
+                        title={t('node.config.deleteParam')}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M3 6h18"></path>
@@ -280,24 +260,23 @@ export const NodeConfigPanel: React.FC = () => {
                         className="form-input parameter-default-input"
                         value={String(param.defaultValue ?? '')}
                         onChange={(e) => handleParameterDefaultChange(index, e.target.value)}
-                        placeholder="Default value"
+                        placeholder={t('node.config.defaultValue')}
                       />
                     </div>
-                  </div>
-                  {duplicateInputNames.has(param.name) && param.name.trim() !== '' && (
-                    <div className="parameter-error-message">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                      </svg>
-                      Duplicate parameter name "{param.name}"
-                    </div>
-                  )}
+                    {duplicateInputNames.has(param.name) && param.name.trim() !== '' && (
+                      <div className="parameter-error-message">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" y1="8" x2="12" y2="12"></line>
+                          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        {t('node.config.duplicateParam', { name: param.name })}
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (
-                <p className="config-placeholder">No input parameters yet</p>
+                <p className="config-placeholder">{t('node.config.noInputParams')}</p>
               )}
             </div>
             <button
@@ -309,12 +288,12 @@ export const NodeConfigPanel: React.FC = () => {
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              Add Parameter
+              {t('node.config.addParameter')}
             </button>
           </div>
 
           <div className="info-section">
-            <h4>Output Parameters</h4>
+            <h4>{t('node.config.outputParams')}</h4>
             <div className="parameters-list">
               {selectedNode.data.outputs && selectedNode.data.outputs.length > 0 ? (
                 selectedNode.data.outputs.map((output, index) => (
@@ -325,21 +304,13 @@ export const NodeConfigPanel: React.FC = () => {
                         className={`form-input parameter-name-input ${duplicateOutputNames.has(output.name) && output.name.trim() !== '' ? 'input-error' : ''}`}
                         value={output.name}
                         onChange={(e) => handleOutputNameChange(index, e.target.value)}
-                        placeholder="Output name"
-                      />
-                    <div className="parameter-row">
-                      <input
-                        type="text"
-                        className="form-input parameter-name-input"
-                        value={output.name}
-                        onChange={(e) => handleOutputNameChange(index, e.target.value)}
-                        placeholder="Output name"
+                        placeholder={t('node.config.outputName')}
                       />
                       <button
                         type="button"
                         className="btn-icon btn-delete"
                         onClick={() => handleDeleteOutput(index)}
-                        title="Delete output"
+                        title={t('node.config.deleteOutput')}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M3 6h18"></path>
@@ -366,24 +337,23 @@ export const NodeConfigPanel: React.FC = () => {
                         className="form-input parameter-default-input"
                         value={String(output.defaultValue ?? '')}
                         onChange={(e) => handleOutputDefaultChange(index, e.target.value)}
-                        placeholder="Default value"
+                        placeholder={t('node.config.defaultValue')}
                       />
                     </div>
-                  </div>
-                  {duplicateOutputNames.has(output.name) && output.name.trim() !== '' && (
-                    <div className="parameter-error-message">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                      </svg>
-                      Duplicate output name "{output.name}"
-                    </div>
-                  )}
+                    {duplicateOutputNames.has(output.name) && output.name.trim() !== '' && (
+                      <div className="parameter-error-message">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" y1="8" x2="12" y2="12"></line>
+                          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        {t('node.config.duplicateOutput', { name: output.name })}
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (
-                <p className="config-placeholder">No output parameters yet</p>
+                <p className="config-placeholder">{t('node.config.noOutputParams')}</p>
               )}
             </div>
             <button
@@ -395,7 +365,7 @@ export const NodeConfigPanel: React.FC = () => {
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              Add Output
+              {t('node.config.addOutput')}
             </button>
           </div>
         </div>

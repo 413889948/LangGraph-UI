@@ -6,33 +6,30 @@
  * - Load project from JSON
  * - Export generated Python code
  * - Create new project (reset canvas)
- * 
- * Task 7.1-7.5: Implement file operations
  */
-
 
 import { useEditorStore, selectGraphDocument, selectIsDirty } from '../store/useEditorStore';
 import { generateLangGraphCode } from '../utils/codeGenerator';
+import { useTranslation } from '../i18n';
 
 /**
  * FileOperations component with toolbar buttons
  */
 export function FileOperations() {
+  const { t } = useTranslation();
   const graphDocument = useEditorStore(selectGraphDocument);
   const isDirty = useEditorStore(selectIsDirty);
   const { resetGraphDocument, setGraphDocument, markClean } = useEditorStore();
 
   /**
-   * Task 7.1: Save project as JSON file
-   * Uses browser download API to save the graph document
+   * Save project as JSON file
    */
   const handleSaveProject = () => {
     if (!graphDocument) {
-      alert('No project to save');
+      alert(t('file.alerts.noProjectToSave'));
       return;
     }
 
-    // Update metadata before saving
     const documentToSave = {
       ...graphDocument,
       metadata: {
@@ -41,10 +38,7 @@ export function FileOperations() {
       },
     };
 
-    // Convert to JSON string
     const jsonString = JSON.stringify(documentToSave, null, 2);
-    
-    // Create blob and download
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -55,26 +49,20 @@ export function FileOperations() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    // Mark as clean after save
     markClean();
   };
 
   /**
-   * Task 7.2: Load project from JSON file
-   * Uses browser file upload API to load a graph document
+   * Load project from JSON file
    */
   const handleLoadProject = () => {
-    // Task 7.5: Check for unsaved changes
     if (isDirty) {
-      const confirmed = window.confirm(
-        'You have unsaved changes. Loading a new project will discard them. Continue?'
-      );
+      const confirmed = window.confirm(t('file.confirm.unsavedChangesLoad'));
       if (!confirmed) {
         return;
       }
     }
 
-    // Create file input
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json,application/json';
@@ -89,20 +77,18 @@ export function FileOperations() {
           const jsonString = event.target?.result as string;
           const loadedDocument = JSON.parse(jsonString);
           
-          // Validate basic structure
           if (!loadedDocument.version || !loadedDocument.metadata || !loadedDocument.nodes) {
-            throw new Error('Invalid project file format');
+            throw new Error(t('file.alerts.invalidFormat'));
           }
 
-          // Load the document
           setGraphDocument(loadedDocument);
         } catch (error) {
-          alert(`Failed to load project: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          alert(t('file.alerts.loadFailed', { error: error instanceof Error ? error.message : 'Unknown error' }));
         }
       };
       
       reader.onerror = () => {
-        alert('Failed to read file');
+        alert(t('file.alerts.fileReadFailed'));
       };
       
       reader.readAsText(file);
@@ -112,19 +98,15 @@ export function FileOperations() {
   };
 
   /**
-   * Task 7.3: Export generated Python code as .py file
-   * Uses code generator and browser download API
+   * Export generated Python code as .py file
    */
   const handleExportCode = () => {
     if (!graphDocument) {
-      alert('No project to export');
+      alert(t('file.alerts.noProjectToExport'));
       return;
     }
 
-    // Generate Python code
     const pythonCode = generateLangGraphCode(graphDocument);
-    
-    // Create blob and download
     const blob = new Blob([pythonCode], { type: 'text/x-python' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -137,15 +119,11 @@ export function FileOperations() {
   };
 
   /**
-   * Task 7.4: Create new project (reset canvas)
-   * Resets graph document to default empty state
+   * Create new project (reset canvas)
    */
   const handleNewProject = () => {
-    // Task 7.5: Check for unsaved changes
     if (isDirty) {
-      const confirmed = window.confirm(
-        'You have unsaved changes. Creating a new project will discard them. Continue?'
-      );
+      const confirmed = window.confirm(t('file.confirm.unsavedChangesNew'));
       if (!confirmed) {
         return;
       }
@@ -159,36 +137,36 @@ export function FileOperations() {
       <button
         onClick={handleNewProject}
         className="file-button new-button"
-        title="Create new project"
+        title={t('file.operations.newTitle')}
         type="button"
       >
-        New
+        {t('file.operations.new')}
       </button>
       <button
         onClick={handleLoadProject}
         className="file-button load-button"
-        title="Load project from JSON file"
+        title={t('file.operations.loadTitle')}
         type="button"
       >
-        Load
+        {t('file.operations.load')}
       </button>
       <button
         onClick={handleSaveProject}
         className="file-button save-button"
-        title="Save project as JSON file"
+        title={t('file.operations.saveTitle')}
         disabled={!graphDocument}
         type="button"
       >
-        Save {isDirty && '*'}
+        {t('file.operations.save')} {isDirty && '*'}
       </button>
       <button
         onClick={handleExportCode}
         className="file-button export-button"
-        title="Export Python code"
+        title={t('file.operations.exportTitle')}
         disabled={!graphDocument}
         type="button"
       >
-        Export Code
+        {t('file.operations.exportCode')}
       </button>
     </div>
   );

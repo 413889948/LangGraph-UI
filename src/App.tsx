@@ -5,10 +5,13 @@ import { NodeConfigPanel } from './components/NodeConfigPanel';
 import { StateSchemaEditor } from './components/StateSchemaEditor';
 import { CodePreview } from './components/CodePreview';
 import { FileOperations } from './components/FileOperations';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { NodeType } from './types';
 import { useEditorStore, selectGraphDocument } from './store/useEditorStore';
+import { useTranslation } from './i18n';
 
 function App() {
+  const { t } = useTranslation();
   const [draggedNodeType, setDraggedNodeType] = React.useState<NodeType | null>(null);
   const [activePanel, setActivePanel] = React.useState<'node' | 'schema' | 'code'>('node');
   
@@ -23,10 +26,13 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <div className="header-title">
-            <h1>LangGraph Visual Editor</h1>
-            <p className="subtitle">Visual Editor for LangGraph Workflows</p>
+            <h1>{t('app.title')}</h1>
+            <p className="subtitle">{t('app.subtitle')}</p>
           </div>
-          <FileOperations />
+          <div className="header-actions">
+            <LanguageSwitcher />
+            <FileOperations />
+          </div>
         </div>
       </header>
       
@@ -44,21 +50,21 @@ function App() {
               onClick={() => setActivePanel('node')}
               type="button"
             >
-              Node Config
+              {t('app.tabs.nodeConfig')}
             </button>
             <button
               className={`tab-button ${activePanel === 'schema' ? 'active' : ''}`}
               onClick={() => setActivePanel('schema')}
               type="button"
             >
-              State Schema
+              {t('app.tabs.stateSchema')}
             </button>
             <button
               className={`tab-button ${activePanel === 'code' ? 'active' : ''}`}
               onClick={() => setActivePanel('code')}
               type="button"
             >
-              Code Preview
+              {t('app.tabs.codePreview')}
             </button>
           </div>
           {activePanel === 'node' ? <NodeConfigPanel /> : activePanel === 'schema' ? <StateSchemaEditor /> : graphDocument ? <CodePreview document={graphDocument} /> : null}

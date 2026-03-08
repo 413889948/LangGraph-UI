@@ -1,8 +1,10 @@
 import React from 'react';
 import { useEditorStore, selectAllStateFields } from '../store/useEditorStore';
 import type { StateField, BasicFieldType, ReducerType } from '../types';
+import { useTranslation } from '../i18n';
 
 export const StateSchemaEditor: React.FC = () => {
+  const { t } = useTranslation();
   const stateFields = useEditorStore(selectAllStateFields);
   const addStateField = useEditorStore((state) => state.addStateField);
   const updateStateField = useEditorStore((state) => state.updateStateField);
@@ -24,8 +26,8 @@ export const StateSchemaEditor: React.FC = () => {
 
   // Handle delete field with confirmation
   const handleDeleteField = (fieldId: string, fieldName: string) => {
-    const displayName = fieldName || 'Unnamed field';
-    if (window.confirm(`Are you sure you want to delete the field "${displayName}"?`)) {
+    const displayName = fieldName || t('stateSchema.fields.name');
+    if (window.confirm(`${t('stateSchema.fields.delete')} "${displayName}"?`)) {
       removeStateField(fieldId);
     }
   };
@@ -52,7 +54,6 @@ export const StateSchemaEditor: React.FC = () => {
     
     let parsedValue: string | number | boolean | null = value;
     
-    // Try to parse based on field type
     const baseType = field.type.baseType;
     if (value.trim() === '') {
       parsedValue = null;
@@ -62,7 +63,6 @@ export const StateSchemaEditor: React.FC = () => {
     } else if (baseType === 'boolean') {
       parsedValue = value.toLowerCase() === 'true';
     } else {
-      // Try JSON parse for complex values
       try {
         parsedValue = JSON.parse(value);
       } catch {
@@ -107,19 +107,18 @@ export const StateSchemaEditor: React.FC = () => {
   return (
     <aside className="state-schema-editor">
       <div className="state-schema-editor-header">
-        <h3>State Schema Editor</h3>
+        <h3>{t('stateSchema.editor.title')}</h3>
       </div>
       <div className="state-schema-editor-content">
         <div className="schema-info">
           <p className="schema-field-count">
             <span className="field-count-number">{fieldCount}</span>
             <span className="field-count-label">
-              {fieldCount === 1 ? 'field' : 'fields'} defined
+              {t('stateSchema.editor.fieldCount', { count: fieldCount })}
             </span>
           </p>
           <p className="schema-description">
-            Define the state structure for your LangGraph workflow.
-            Fields will be used to generate the TypedDict schema.
+            {t('stateSchema.editor.description')}
           </p>
         </div>
         
@@ -133,14 +132,14 @@ export const StateSchemaEditor: React.FC = () => {
                 <line x1="9" y1="17" x2="11" y2="17"></line>
               </svg>
             </div>
-            <p className="empty-state-title">No Fields Defined</p>
+            <p className="empty-state-title">{t('stateSchema.emptyState.title')}</p>
             <p className="empty-state-description">
-              Click "Add Field" to create your first state field.
+              {t('stateSchema.emptyState.description')}
             </p>
           </div>
         ) : (
           <div className="schema-fields-list">
-            <h4>State Fields</h4>
+            <h4>{t('stateSchema.fields.title')}</h4>
             <div className="field-list-container">
               {stateFields.map((field) => {
                 const hasDuplicate = duplicateNames.has(field.name) && field.name.trim() !== '';
@@ -155,22 +154,22 @@ export const StateSchemaEditor: React.FC = () => {
                         className={`form-input field-name-input ${hasError ? 'input-error' : ''}`}
                         value={field.name}
                         onChange={(e) => handleNameChange(field.id, e.target.value)}
-                        placeholder="Field name"
+                        placeholder={t('stateSchema.fields.name')}
                       />
                       <label className="field-required-label">
                         <input
                           type="checkbox"
                           checked={field.required !== false}
                           onChange={(e) => updateStateField(field.id, { id: field.id, required: e.target.checked })}
-                          title="Required field"
+                          title={t('stateSchema.fields.required')}
                         />
-                        Required
+                        {t('stateSchema.fields.required')}
                       </label>
                       <button
                         type="button"
                         className="btn-icon btn-delete"
                         onClick={() => handleDeleteField(field.id, field.name)}
-                        title="Delete field"
+                        title={t('stateSchema.fields.delete')}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M3 6h18"></path>
@@ -184,24 +183,24 @@ export const StateSchemaEditor: React.FC = () => {
                         className="form-select field-type-select"
                         value={field.type.baseType}
                         onChange={(e) => handleTypeChange(field.id, e.target.value as BasicFieldType)}
-                        title="Field type"
+                        title={t('stateSchema.fields.type')}
                       >
-                        <option value="string">string</option>
-                        <option value="number">int</option>
-                        <option value="boolean">bool</option>
-                        <option value="float">float</option>
+                        <option value="string">{t('stateSchema.types.string')}</option>
+                        <option value="number">{t('stateSchema.types.int')}</option>
+                        <option value="boolean">{t('stateSchema.types.bool')}</option>
+                        <option value="float">{t('stateSchema.types.float')}</option>
                       </select>
                       <select
                         className="form-select field-reducer-select"
                         value={field.reducer || 'replace'}
                         onChange={(e) => handleReducerChange(field.id, e.target.value as ReducerType)}
-                        title="Reducer function"
+                        title={t('stateSchema.fields.reducer')}
                       >
-                        <option value="replace">replace</option>
-                        <option value="append">append</option>
-                        <option value="sum">sum</option>
-                        <option value="max">max</option>
-                        <option value="min">min</option>
+                        <option value="replace">{t('stateSchema.reducers.replace')}</option>
+                        <option value="append">{t('stateSchema.reducers.append')}</option>
+                        <option value="sum">{t('stateSchema.reducers.sum')}</option>
+                        <option value="max">{t('stateSchema.reducers.max')}</option>
+                        <option value="min">{t('stateSchema.reducers.min')}</option>
                       </select>
                     </div>
                     <div className="field-row">
@@ -210,7 +209,7 @@ export const StateSchemaEditor: React.FC = () => {
                         className="form-input field-default-input"
                         value={getDefaultValueDisplay(field)}
                         onChange={(e) => handleDefaultValueChange(field.id, e.target.value)}
-                        placeholder="Default value (e.g., 0, true, [], {})"
+                        placeholder={t('stateSchema.fields.defaultValue')}
                       />
                     </div>
                     {hasError && (
@@ -220,13 +219,12 @@ export const StateSchemaEditor: React.FC = () => {
                           <line x1="12" y1="8" x2="12" y2="12"></line>
                           <line x1="12" y1="16" x2="12.01" y2="16"></line>
                         </svg>
-                        {hasEmptyName ? 'Field name is required' : `Duplicate field name "${field.name}"`}
+                        {hasEmptyName ? t('stateSchema.fields.emptyName') : t('stateSchema.fields.duplicateName', { name: field.name })}
                       </div>
                     )}
                   </div>
                 );
               })}
-
             </div>
           </div>
         )}
@@ -241,7 +239,7 @@ export const StateSchemaEditor: React.FC = () => {
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            Add Field
+            {t('stateSchema.fields.addField')}
           </button>
         </div>
       </div>
