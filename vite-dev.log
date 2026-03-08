@@ -1,0 +1,361 @@
+
+> langgraph-visual-editor@0.0.0 dev
+> vite --host 127.0.0.1 --port 4174
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m246[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m4174[22m/[39m
+[2m12:20:54[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:25:36[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:25:36[22m [36m[1m[vite][22m[39m [32m✨ new dependencies optimized: [33muuid[32m[39m
+[2m12:25:36[22m [36m[1m[vite][22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[2m12:25:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m12:25:50[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m12:26:07[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:26:19[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m12:26:19[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\Code\Ai\langGraphUI\src\App.tsx: 'return' outside of function. (2:2)
+
+[0m [90m 1 |[31m
+[31m[1m>[22m[31m[90m 2 |[31m   [36mreturn[31m (
+ [90m   |[31m   [31m[1m^[22m[31m
+ [90m 3 |[31m     [33m<[31m[33mdiv[31m className[33m=[31m[32m"app-container"[31m[33m>[31m
+ [90m 4 |[31m       [33m<[31m[33mheader[31m className[33m=[31m[32m"app-header"[31m[33m>[31m
+ [90m 5 |[31m         [33m<[31m[33mh1[31m[33m>[31m[33mLangGraph[31m [33mVisual[31m [33mEditor[31m[33m<[31m[33m/[31m[33mh1[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/Code/Ai/langGraphUI/src/App.tsx[39m:2:2
+[33m  1  |  
+  2  |    return (
+     |    ^
+  3  |      <div className="app-container">
+  4  |        <header className="app-header">[39m
+      at constructor (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:365:19)
+      at TypeScriptParserMixin.raise (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6599:19)
+      at TypeScriptParserMixin.parseReturnStatement (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13136:12)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13309:10)
+      at TypeScriptParserMixin.parseProgram (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12622:10)
+      at TypeScriptParserMixin.parseTopLevel (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12612:25)
+      at TypeScriptParserMixin.parse (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:14488:25)
+      at TypeScriptParserMixin.parse (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10126:18)
+      at parse (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:14522:38)
+      at parser (D:\Code\Ai\langGraphUI\node_modules\@babel\core\lib\parser\index.js:41:34)
+      at parser.next (<anonymous>)
+      at normalizeFile (D:\Code\Ai\langGraphUI\node_modules\@babel\core\lib\transformation\normalize-file.js:64:37)
+      at normalizeFile.next (<anonymous>)
+      at run (D:\Code\Ai\langGraphUI\node_modules\@babel\core\lib\transformation\index.js:22:50)
+      at run.next (<anonymous>)
+      at transform (D:\Code\Ai\langGraphUI\node_modules\@babel\core\lib\transform.js:22:33)
+      at transform.next (<anonymous>)
+      at step (D:\Code\Ai\langGraphUI\node_modules\gensync\index.js:261:32)
+      at D:\Code\Ai\langGraphUI\node_modules\gensync\index.js:273:13
+      at async.call.result.err.err (D:\Code\Ai\langGraphUI\node_modules\gensync\index.js:223:11)
+      at D:\Code\Ai\langGraphUI\node_modules\gensync\index.js:189:28
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\core\lib\gensync-utils\async.js:67:7
+      at D:\Code\Ai\langGraphUI\node_modules\gensync\index.js:113:33
+      at step (D:\Code\Ai\langGraphUI\node_modules\gensync\index.js:287:14)
+      at D:\Code\Ai\langGraphUI\node_modules\gensync\index.js:273:13
+      at async.call.result.err.err (D:\Code\Ai\langGraphUI\node_modules\gensync\index.js:223:11)
+[2m12:26:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m12:26:47[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:26:47[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\Code\Ai\langGraphUI\src\components\GraphCanvas.tsx: Unexpected token (266:2)
+
+[0m [90m 264 |[31m
+ [90m 265 |[31m   [36mreturn[31m (
+[31m[1m>[22m[31m[90m 266 |[31m   [36mreturn[31m (
+ [90m     |[31m   [31m[1m^[22m[31m
+ [90m 267 |[31m     [33m<[31m[33mdiv[31m className[33m=[31m[32m"graph-canvas-container"[31m[33m>[31m
+ [90m 268 |[31m       [33m<[31m[33mReactFlow[31m
+ [90m 269 |[31m         nodes[33m=[31m{nodeList}[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/Code/Ai/langGraphUI/src/components/GraphCanvas.tsx[39m:266:2
+[33m  264|  
+  265|    return (
+  266|    return (
+     |    ^
+  267|      <div className="graph-canvas-container">
+  268|        <ReactFlow[39m
+      at constructor (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:365:19)
+      at TypeScriptParserMixin.raise (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6619:16)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11442:22)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9786:20)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:39
+      at TypeScriptParserMixin.allowInAnd (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12426:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12493:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11675:28)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10784:23)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12100:24)
+      at TypeScriptParserMixin.parseArrowExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12075:10)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11687:12)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+[2m12:26:59[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:29:24[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m12:29:24[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\Code\Ai\langGraphUI\src\App.tsx: Expected corresponding JSX closing tag for <main>. (21:8)
+
+[0m [90m 19 |[31m       [33m<[31m[33mmain[31m className[33m=[31m[32m"app-main"[31m[33m>[31m
+ [90m 20 |[31m           [33m<[31m[33mNodePalette[31m onDragStart[33m=[31m{handleDragStart} draggedNodeType[33m=[31m{draggedNodeType} [33m/[31m[33m>[31m
+[31m[1m>[22m[31m[90m 21 |[31m         [33m<[31m[33m/[31m[33maside[31m[33m>[31m
+ [90m    |[31m         [31m[1m^[22m[31m
+ [90m 22 |[31m           [33m<[31m[33mGraphCanvas[31m draggedNodeType[33m=[31m{draggedNodeType} onDraggedNodeTypeChange[33m=[31m{setDraggedNodeType} [33m/[31m[33m>[31m
+ [90m 23 |[31m         [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m
+ [90m 24 |[31m       [33m<[31m[33m/[31m[33mmain[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/Code/Ai/langGraphUI/src/App.tsx[39m:21:8
+[33m  19 |        <main className="app-main">
+  20 |            <NodePalette onDragStart={handleDragStart} draggedNodeType={draggedNodeType} />
+  21 |          </aside>
+     |          ^
+  22 |            <GraphCanvas draggedNodeType={draggedNodeType} onDraggedNodeTypeChange={setDraggedNodeType} />
+  23 |          </div>[39m
+      at constructor (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:365:19)
+      at TypeScriptParserMixin.raise (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6599:19)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4727:16)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4698:32)
+      at TypeScriptParserMixin.jsxParseElement (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4749:17)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4759:19)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10831:21)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9775:39
+      at TypeScriptParserMixin.tryParse (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6907:20)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9775:18)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:39
+      at TypeScriptParserMixin.allowInAnd (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12426:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12493:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11675:28)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10784:23)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9172:18)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12403:14)
+[2m12:29:34[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:29:34[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\Code\Ai\langGraphUI\src\components\GraphCanvas.tsx: Unexpected token (263:2)
+
+[0m [90m 261 |[31m       onDraggedNodeTypeChange([36mnull[31m)[33m;[31m
+ [90m 262 |[31m     }[33m,[31m
+[31m[1m>[22m[31m[90m 263 |[31m   }[33m,[31m [draggedNodeType[33m,[31m screenToFlowPosition[33m,[31m addNode[33m,[31m onDraggedNodeTypeChange])[33m;[31m
+ [90m     |[31m   [31m[1m^[22m[31m
+ [90m 264 |[31m
+ [90m 265 |[31m   [36mreturn[31m (
+ [90m 266 |[31m     [33m<[31m[33mdiv[31m className[33m=[31m[32m"graph-canvas-container"[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/Code/Ai/langGraphUI/src/components/GraphCanvas.tsx[39m:263:2
+[33m  261|        onDraggedNodeTypeChange(null);
+  262|      },
+  263|    }, [draggedNodeType, screenToFlowPosition, addNode, onDraggedNodeTypeChange]);
+     |    ^
+  264|  
+  265|    return ([39m
+      at constructor (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:365:19)
+      at TypeScriptParserMixin.raise (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6619:16)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11442:22)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9786:20)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:39
+      at TypeScriptParserMixin.allowInAnd (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12426:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12493:17)
+      at TypeScriptParserMixin.parseExprListItem (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12175:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11252:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11186:29)
+      at TypeScriptParserMixin.parseSubscript (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseSubscript (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9272:18)
+      at TypeScriptParserMixin.parseSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11094:19)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11085:17)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9786:20)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:39
+      at TypeScriptParserMixin.allowInAnd (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12421:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:17)
+      at TypeScriptParserMixin.parseVar (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13384:91)
+      at TypeScriptParserMixin.parseVarStatement (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13230:10)
+      at TypeScriptParserMixin.parseVarStatement (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9408:31)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12851:23)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12100:24)
+      at TypeScriptParserMixin.parseArrowExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12075:10)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11687:12)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11331:23)
+[2m12:29:47[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/NodePalette.tsx[22m
+[2m12:30:01[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m12:30:01[22m [31m[1m[vite][22m[39m Pre-transform error: D:\Code\Ai\langGraphUI\src\components\GraphCanvas.tsx: Unexpected token (263:2)
+
+[0m [90m 261 |[39m       onDraggedNodeTypeChange([36mnull[39m)[33m;[39m
+ [90m 262 |[39m     }[33m,[39m
+[31m[1m>[22m[39m[90m 263 |[39m   }[33m,[39m [draggedNodeType[33m,[39m screenToFlowPosition[33m,[39m addNode[33m,[39m onDraggedNodeTypeChange])[33m;[39m
+ [90m     |[39m   [31m[1m^[22m[39m
+ [90m 264 |[39m
+ [90m 265 |[39m   [36mreturn[39m (
+ [90m 266 |[39m     [33m<[39m[33mdiv[39m className[33m=[39m[32m"graph-canvas-container"[39m[33m>[39m[0m
+[2m12:30:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:30:10[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\Code\Ai\langGraphUI\src\components\GraphCanvas.tsx: Unexpected token (263:2)
+
+[0m [90m 261 |[31m       onDraggedNodeTypeChange([36mnull[31m)[33m;[31m
+ [90m 262 |[31m     }[33m,[31m
+[31m[1m>[22m[31m[90m 263 |[31m   }[33m,[31m [draggedNodeType[33m,[31m screenToFlowPosition[33m,[31m addNode[33m,[31m onDraggedNodeTypeChange])[33m;[31m
+ [90m     |[31m   [31m[1m^[22m[31m
+ [90m 264 |[31m
+ [90m 265 |[31m   [36mreturn[31m (
+ [90m 266 |[31m     [33m<[31m[33mdiv[31m className[33m=[31m[32m"graph-canvas-container"[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/Code/Ai/langGraphUI/src/components/GraphCanvas.tsx[39m:263:2
+[33m  261|        onDraggedNodeTypeChange(null);
+  262|      },
+  263|    }, [draggedNodeType, screenToFlowPosition, addNode, onDraggedNodeTypeChange]);
+     |    ^
+  264|  
+  265|    return ([39m
+      at constructor (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:365:19)
+      at TypeScriptParserMixin.raise (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:6619:16)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11442:22)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9786:20)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:39
+      at TypeScriptParserMixin.allowInAnd (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12426:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12493:17)
+      at TypeScriptParserMixin.parseExprListItem (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12175:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11252:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11186:29)
+      at TypeScriptParserMixin.parseSubscript (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseSubscript (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9272:18)
+      at TypeScriptParserMixin.parseSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11094:19)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11085:17)
+      at TypeScriptParserMixin.parseUpdate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9786:20)
+      at D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:39
+      at TypeScriptParserMixin.allowInAnd (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12421:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:10800:17)
+      at TypeScriptParserMixin.parseVar (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13384:91)
+      at TypeScriptParserMixin.parseVarStatement (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13230:10)
+      at TypeScriptParserMixin.parseVarStatement (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9408:31)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12851:23)
+      at TypeScriptParserMixin.parseStatementContent (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12100:24)
+      at TypeScriptParserMixin.parseArrowExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:12075:10)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11687:12)
+      at TypeScriptParserMixin.parseExprAtom (D:\Code\Ai\langGraphUI\node_modules\@babel\parser\lib\index.js:11331:23)
+[2m12:30:29[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:31:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/GraphCanvas.tsx[22m
+[2m12:32:02[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m12:32:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m12:38:13[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+[2m12:38:45[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+[2m12:39:14[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+[2m12:39:27[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+[2m12:47:48[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+[2m12:47:59[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+[2m12:48:25[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+[2m12:51:56[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+[2m12:52:42[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/GraphCanvas.tsx[22m
+^C
