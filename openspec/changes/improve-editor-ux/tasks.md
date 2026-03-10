@@ -75,3 +75,11 @@
 - [x] 10.6 测试快捷键输入保护
 - [x] 10.7 测试历史记录 20 步限制
 - [x] 10.8 验证导出 Python 代码无 UUID
+
+
+## 11. 手动保存快捷键
+
+- [x] 11.1 在 GraphCanvas.tsx 添加 Ctrl+S 快捷键绑定
+- [x] 11.2 支持 macOS Cmd+S 修饰
+- [x] 11.3 立即保存到 localStorage（跳过 debounce）
+- [x] 11.4 保存成功后显示 toast 提示

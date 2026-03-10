@@ -9,6 +9,8 @@ import { useEditorStore, selectAllNodes, selectAllEdges } from '../store/useEdit
 import { GraphNode, GraphEdge, NodeType, NodeData } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
+const GRAPH_STORAGE_KEY = 'langgraph-graph-document';
+
 const convertToReactFlowNode = (node: GraphNode): Node => ({
   id: node.id,
   type: node.type,
@@ -228,6 +230,23 @@ const GraphCanvasInner: React.FC<GraphCanvasInnerProps> = ({ draggedNodeType, on
         redo();
         return;
       }
+
+      // Handle Ctrl+S / Cmd+S manual save shortcut
+      if ((event.ctrlKey || event.metaKey) && key === 's') {
+        event.preventDefault();
+        const state = useEditorStore.getState();
+        if (state.graphDocument) {
+          try {
+            localStorage.setItem(GRAPH_STORAGE_KEY, JSON.stringify(state.graphDocument));
+            useEditorStore.getState().markClean();
+            console.log('保存成功');
+          } catch (e) {
+            console.error('保存失败', e);
+          }
+        }
+        return;
+      }
+
 
       if (key === 'delete' || key === 'backspace') {
         const state = useEditorStore.getState();
