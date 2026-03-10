@@ -1,0 +1,3 @@
+- 2026-03-10: Added semantic node naming via in-memory counters in `useEditorStore`.
+- 2026-03-10: Counter rebuild from loaded docs works by parsing `fun_N`, `tool_N`, `subgraph_N` and taking max per type.
+- 2026-03-10: New nodes now receive semantic names from store action, while IDs remain UUID-based.

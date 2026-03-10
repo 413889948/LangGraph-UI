@@ -14,6 +14,7 @@ import { EdgeUpdate, GraphDocument, GraphEdge, ViewportState, GraphNode, StateFi
 // localStorage key for locale persistence
 const LOCALE_STORAGE_KEY = 'langgraph-editor-locale';
 const GRAPH_STORAGE_KEY = 'langgraph-graph-document';
+const THEME_STORAGE_KEY = 'langgraph-editor-theme';
 
 let saveTimeoutId: ReturnType<typeof setTimeout> | null = null;
 let quotaWarningShown = false;
@@ -55,6 +56,21 @@ function getStoredLocale(): Locale {
 }
 
 /**
+ * Get stored theme or default to dark
+ */
+function getStoredTheme(): 'dark' | 'light' {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === 'dark' || stored === 'light') {
+      return stored;
+    }
+  } catch {
+    // localStorage not available
+  }
+  return 'dark'; // Default to dark
+}
+
+/**
  * Editor state interface
  */
 interface EditorState {
@@ -86,6 +102,9 @@ interface EditorState {
   
   // i18n state
   locale: Locale;
+  
+  // Theme state
+  theme: 'dark' | 'light';
 }
 
 /**
@@ -146,6 +165,9 @@ interface EditorActions {
   
   // i18n operations
   setLocale: (locale: Locale) => void;
+  
+  // Theme operations
+  setTheme: (theme: 'dark' | 'light') => void;
 }
 
 /**
@@ -228,6 +250,7 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
     subgraph: 0,
   },
   locale: getStoredLocale(),
+  theme: getStoredTheme(),
   
   // Graph document operations
   setGraphDocument: (doc) => {
@@ -702,8 +725,17 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       // localStorage not available
     }
   },
+  
+  // Theme operations
+  setTheme: (theme) => {
+    set({ theme });
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // localStorage not available
+    }
+  },
 }));
-
 /**
  * Selectors for common state access patterns
  * These can be used to avoid unnecessary re-renders
@@ -715,6 +747,7 @@ export const selectViewport = (state: EditorState) => state.viewport;
 export const selectIsDirty = (state: EditorState) => state.isDirty;
 export const selectNodeNamingCounters = (state: EditorState) => state.nodeNamingCounters;
 export const selectLocale = (state: EditorState) => state.locale;
+export const selectTheme = (state: EditorState) => state.theme;
 
 /**
  * Selector to check if a node is selected
@@ -765,17 +798,24 @@ export const selectNodeById = (nodeId: string) => (state: EditorState) => {
 };
 
 /**
+ * Stable empty array reference to avoid re-renders
+ */
+const EMPTY_ARRAY: any[] = [];
+
+/**
  * Selector to get all nodes
+ * Returns a stable empty array reference to avoid re-renders
  */
 export const selectAllNodes = (state: EditorState) => {
-  return state.graphDocument?.nodes || [];
+  return state.graphDocument?.nodes || EMPTY_ARRAY;
 };
 
 /**
  * Selector to get all edges
+ * Returns a stable empty array reference to avoid re-renders
  */
 export const selectAllEdges = (state: EditorState) => {
-  return state.graphDocument?.edges || [];
+  return state.graphDocument?.edges || EMPTY_ARRAY;
 };
 
 /**

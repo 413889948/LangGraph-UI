@@ -256,3 +256,120 @@ npm run build
 - `src/App.tsx`: 状态提升位置
 - `src/components/GraphCanvas.tsx`: 接收状态作为 props
 - `src/components/NodePalette.tsx`: 触发拖拽开始
+
+
+## i18n Implementation Notes (2026-03-09)
+
+### No Major Issues Encountered
+
+The i18n implementation was straightforward due to:
+
+1. **Existing Store Infrastructure**:
+   - Locale state already in `useEditorStore`
+   - `setLocale` action already implemented
+   - localStorage persistence already working
+
+2. **Clean Import Structure**:
+   - Components already imported `useTranslation` from `../i18n`
+   - Only needed to create the missing module
+   - No refactoring of existing components required
+
+3. **Minimal Scope**:
+   - Only 2 locales (zh, en)
+   - No complex pluralization rules
+   - Simple parameter interpolation sufficient
+
+### Minor TypeScript Issue (Resolved)
+
+**Issue**: Unused `resources` constant caused build error:
+```
+src/i18n/index.ts(291,7): error TS6133: 'resources' is declared but its value is never read.
+```
+
+**Resolution**: Commented out the unused constant:
+```typescript
+/**
+ * Translation resources (kept for reference, using flattened versions)
+ * const resources: Record<Locale, TranslationResource> = { zh, en };
+ */
+```
+
+**Lesson**: Remove or comment unused code before committing. TypeScript's `noUnusedLocals` caught this.
+
+### CSS Styling
+
+**Decision**: LanguageSwitcher uses minimal native styling:
+- No custom CSS added to `index.css`
+- Inherits global form element styles
+- May need styling enhancement in future for:
+  - Header action bar alignment
+  - Custom dropdown appearance
+  - Dark mode support
+
+### Translation Completeness
+
+All translation keys currently used by components are covered:
+- ✅ App.tsx (3 keys)
+- ✅ NodePalette.tsx (7 keys)
+- ✅ NodeConfigPanel.tsx (24 keys)
+- ✅ StateSchemaEditor.tsx (31 keys)
+- ✅ CodePreview.tsx (9 keys)
+- ✅ FileOperations.tsx (13 keys)
+
+Total: ~87 unique translation keys covered.
+
+### Build Output Notes
+
+CSS minification warnings are pre-existing (not caused by i18n):
+```
+Expected identifier but found whitespace [css-syntax-error]
+    <stdin>:1089:14:
+      1089 │   flex-shrink: 0;
+```
+
+These warnings don't affect functionality and can be addressed separately.
+
+
+
+## LanguageSwitcher Form Field Accessibility Fix (2026-03-09)
+
+### Issue
+
+Browser accessibility inspection reported:
+> A form field element should have an id or name attribute
+
+### Root Cause
+
+The native `<select>` element in `LanguageSwitcher.tsx` lacked both `id` and `name` attributes, which are required for proper form field accessibility and label association.
+
+### Fix
+
+Added stable `id` and `name` attributes to the select element:
+
+```tsx
+<select
+  id="language-switcher"
+  name="language"
+  value={locale}
+  onChange={handleChange}
+  className="language-select"
+  title="Switch language / 切换语言"
+>
+```
+
+### Verification
+
+```bash
+npm run build
+✓ built in 1.02s
+```
+
+Build passes with no TypeScript errors. CSS minification warnings are pre-existing.
+
+### Impact
+
+- ✅ Accessibility requirement satisfied
+- ✅ No behavior changes (still uses Zustand store)
+- ✅ No visual changes
+- ✅ Stable identifier for potential future label association
+

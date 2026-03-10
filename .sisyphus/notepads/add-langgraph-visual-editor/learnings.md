@@ -1933,3 +1933,153 @@ The Zustand store's field operations (addStateField, updateStateField, removeSta
 - React re-renders via selector subscription
 - No manual component communication needed
 
+
+
+## Task: i18n Implementation (2026-03-09)
+
+### Implementation Overview
+
+Successfully implemented internationalization (i18n) support for the LangGraph Visual Editor with Chinese (zh) and English (en) locales.
+
+### Core Architecture
+
+**1. Module Structure (`src/i18n/index.ts`)**:
+- Single entry point exporting `useTranslation` hook and `Locale` type
+- Pre-flattened translation dictionaries for performance
+- Simple parameter interpolation with `{key}` syntax
+- Basic pluralization support: `{count, plural, one {} other {s}}`
+
+**2. Translation Function Pattern**:
+```typescript
+const { t } = useTranslation();
+t('app.title') // Returns localized string
+t('codePreview.validation.errors', { count: 3 }) // With parameter interpolation
+```
+
+**3. Store Integration**:
+- Uses existing `useEditorStore` for locale state
+- Locale persisted to localStorage via `LOCALE_STORAGE_KEY`
+- Automatic re-render when locale changes via Zustand selector
+
+**4. LanguageSwitcher Component**:
+- Minimal native `<select>` element
+- Direct store integration: reads `locale`, calls `setLocale`
+- No additional CSS required (inherits global styles)
+
+### Translation Key Organization
+
+Keys follow hierarchical dot-notation matching component structure:
+- `app.*` - App-level UI (title, tabs)
+- `node.palette.*` - Node palette labels
+- `node.config.*` - Node configuration panel
+- `stateSchema.*` - State schema editor
+- `codePreview.*` - Code preview component
+- `file.*` - File operations (save/load/export)
+
+### Parameter Interpolation
+
+Simple regex-based replacement:
+```typescript
+// In translation: 'Duplicate parameter name: {name}'
+// Usage: t('node.config.duplicateParam', { name: 'input' })
+// Result: 'Duplicate parameter name: input'
+```
+
+Pluralization handled specially:
+```typescript
+// In translation: '{count} error{count, plural, one {} other {s}}'
+// Usage: t('codePreview.validation.errors', { count: 1 })
+// Result: '1 error' (singular) or '3 errors' (plural)
+```
+
+### Key Design Decisions
+
+**1. No External Dependencies**:
+- Avoided react-i18next, i18next, lingui, etc.
+- Keeps bundle size minimal
+- Simple enough for 2-locale use case
+
+**2. Pre-flattened Translations**:
+- Nested objects flattened at build time
+- Runtime lookup is O(1) dictionary access
+- No recursive key traversal needed
+
+**3. Fallback to Key**:
+- Missing translations return the key itself
+- Console warning for debugging
+- Prevents runtime errors from breaking UI
+
+**4. Type Safety**:
+- `Locale` type exported and reused
+- Translation functions properly typed
+- TypeScript catches invalid key usage (if strict mode)
+
+### File Locations
+
+Created:
+- `src/i18n/index.ts` (399 lines)
+- `src/components/LanguageSwitcher.tsx` (37 lines)
+
+Modified:
+- None (existing imports already pointed to these files)
+
+### Build Verification
+
+```bash
+npm run build
+✓ 227 modules transformed
+✓ built in 1.05s
+```
+
+No TypeScript errors. CSS minification warnings are pre-existing.
+
+### Usage Example
+
+```typescript
+// In any component
+import { useTranslation } from '../i18n';
+
+function MyComponent() {
+  const { t, locale } = useTranslation();
+  
+  return (
+    <div>
+      <h1>{t('app.title')}</h1>
+      <p>{t('app.subtitle')}</p>
+      <LanguageSwitcher />
+    </div>
+  );
+}
+```
+
+### Lessons Learned
+
+**1. Hook-Based Design**:
+- Using Zustand hook in `useTranslation` ensures reactivity
+- Locale changes trigger re-render in all components using `t()`
+- No need for event emitters or manual subscriptions
+
+**2. Flattening Trade-offs**:
+- Flattening at module level (not per-render) is critical
+- Avoids O(n) recursion on every render
+- One-time cost during module initialization
+
+**3. Minimal Styling**:
+- LanguageSwitcher uses native `<select>` for MVP
+- Avoids custom dropdown complexity
+- Can be enhanced later with custom UI if needed
+
+**4. Translation Coverage**:
+- Covered all keys used by existing components
+- No broken UI after implementation
+- Ready for immediate use
+
+### Future Enhancements
+
+Potential improvements (not needed now):
+- Lazy loading translations for additional locales
+- Translation file externalization (JSON/YAML)
+- Rich formatting (HTML, links) in translations
+- Context-based translations (gender, formality)
+- Translation management tools (Crowdin, Lokalise)
+

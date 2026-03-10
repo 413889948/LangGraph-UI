@@ -1,0 +1,2 @@
+- 2026-03-10: Naming counters are not persisted and are reconstructed with `resetNodeNaming` after project load.
+- 2026-03-10: Node deletion does not recycle sequence numbers; counters only move forward.

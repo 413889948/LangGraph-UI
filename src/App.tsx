@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GraphCanvas } from './components/GraphCanvas';
 import { NodePalette } from './components/NodePalette';
 import { NodeConfigPanel } from './components/NodeConfigPanel';
@@ -6,6 +6,7 @@ import { StateSchemaEditor } from './components/StateSchemaEditor';
 import { CodePreview } from './components/CodePreview';
 import { FileOperations } from './components/FileOperations';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { ThemeToggle } from './components/ThemeToggle';
 import { NodeType } from './types';
 import { useEditorStore, selectGraphDocument } from './store/useEditorStore';
 import { useTranslation } from './i18n';
@@ -14,8 +15,14 @@ function App() {
   const { t } = useTranslation();
   const [draggedNodeType, setDraggedNodeType] = React.useState<NodeType | null>(null);
   const [activePanel, setActivePanel] = React.useState<'node' | 'schema' | 'code'>('node');
+  const theme = useEditorStore((state) => state.theme);
   
   const graphDocument = useEditorStore(selectGraphDocument);
+
+  // Update HTML data-theme attribute when theme changes
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   const handleDragStart = (_event: React.DragEvent, nodeType: NodeType) => {
     setDraggedNodeType(nodeType);
@@ -31,6 +38,7 @@ function App() {
           </div>
           <div className="header-actions">
             <LanguageSwitcher />
+            <ThemeToggle />
             <FileOperations />
           </div>
         </div>
