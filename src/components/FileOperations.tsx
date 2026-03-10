@@ -19,7 +19,7 @@ export function FileOperations() {
   const { t } = useTranslation();
   const graphDocument = useEditorStore(selectGraphDocument);
   const isDirty = useEditorStore(selectIsDirty);
-  const { resetGraphDocument, setGraphDocument, markClean } = useEditorStore();
+  const { resetGraphDocument, setGraphDocument, markClean, resetNodeNaming } = useEditorStore();
 
   /**
    * Save project as JSON file
@@ -82,6 +82,7 @@ export function FileOperations() {
           }
 
           setGraphDocument(loadedDocument);
+          resetNodeNaming(loadedDocument);
         } catch (error) {
           alert(t('file.alerts.loadFailed', { error: error instanceof Error ? error.message : 'Unknown error' }));
         }

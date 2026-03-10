@@ -102,6 +102,7 @@ const GraphCanvasInner: React.FC<GraphCanvasInnerProps> = ({ draggedNodeType, on
   const edges = useEditorStore(selectAllEdges);
   const resetGraphDocument = useEditorStore((state) => state.resetGraphDocument);
   const addNode = useEditorStore((state) => state.addNode);
+  const getNextNodeName = useEditorStore((state) => state.getNextNodeName);
   const updateNode = useEditorStore((state) => state.updateNode);
   const removeNode = useEditorStore((state) => state.removeNode);
   const selectNode = useEditorStore((state) => state.selectNode);
@@ -109,6 +110,8 @@ const GraphCanvasInner: React.FC<GraphCanvasInnerProps> = ({ draggedNodeType, on
   const clearSelection = useEditorStore((state) => state.clearSelection);
   const addEdge = useEditorStore((state) => state.addEdge);
   const removeEdge = useEditorStore((state) => state.removeEdge);
+  const undo = useEditorStore((state) => state.undo);
+  const redo = useEditorStore((state) => state.redo);
   const setViewport = useEditorStore((state) => state.setViewport);
   const { screenToFlowPosition } = useReactFlow();
 
@@ -139,12 +142,12 @@ const GraphCanvasInner: React.FC<GraphCanvasInnerProps> = ({ draggedNodeType, on
 
     const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
     const id = uuidv4();
-    const name = `${draggedNodeType}_${id.slice(0, 8)}`;
+    const name = getNextNodeName(draggedNodeType);
     const newNode: GraphNode = { id, type: draggedNodeType, data: createDefaultNodeData(draggedNodeType, name), position };
 
     addNode(newNode);
     onDraggedNodeTypeChange(null);
-  }, [draggedNodeType, screenToFlowPosition, addNode, onDraggedNodeTypeChange]);
+  }, [draggedNodeType, screenToFlowPosition, addNode, getNextNodeName, onDraggedNodeTypeChange]);
 
   // Handle edge connection creation
   const onConnect = React.useCallback(
@@ -196,7 +199,37 @@ const GraphCanvasInner: React.FC<GraphCanvasInnerProps> = ({ draggedNodeType, on
   // Handle node and edge deletion via keyboard
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Delete' || event.key === 'Backspace') {
+      const key = event.key.toLowerCase();
+      const target = event.target as HTMLElement;
+      const isInput = ['INPUT', 'TEXTAREA'].includes(target.tagName) || target.isContentEditable;
+
+      if (isInput) {
+        if (key === 'delete' || key === 'backspace') {
+          return;
+        }
+
+        if ((event.ctrlKey || event.metaKey) && (key === 'z' || key === 'y')) {
+          return;
+        }
+      }
+
+      if ((event.ctrlKey || event.metaKey) && key === 'z') {
+        event.preventDefault();
+        if (event.shiftKey) {
+          redo();
+        } else {
+          undo();
+        }
+        return;
+      }
+
+      if ((event.ctrlKey || event.metaKey) && key === 'y') {
+        event.preventDefault();
+        redo();
+        return;
+      }
+
+      if (key === 'delete' || key === 'backspace') {
         const state = useEditorStore.getState();
         // Delete selected node if a node is selected
         if (state.selectedNodeId) {
@@ -211,7 +244,7 @@ const GraphCanvasInner: React.FC<GraphCanvasInnerProps> = ({ draggedNodeType, on
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [removeNode, removeEdge]);
+  }, [removeNode, removeEdge, redo, undo]);
 
   return (
     <div className="graph-canvas-container">

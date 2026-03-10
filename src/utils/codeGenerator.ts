@@ -119,7 +119,7 @@ function generateNodeRegistrations(nodes: GraphNode[]): string {
  * Generate add_edge code
  * Task 6.6: Implement add_edge code generation
  */
-function generateAddEdge(edges: GraphEdge[]): string {
+function generateAddEdge(edges: GraphEdge[], idToName: Map<string, string>): string {
   const directEdges = edges.filter(e => e.type === 'direct');
   
   if (directEdges.length === 0) {
@@ -128,7 +128,7 @@ function generateAddEdge(edges: GraphEdge[]): string {
 
   let code = '';
   for (const edge of directEdges) {
-    code += `graph.add_edge("${edge.source}", "${edge.target}")\n`;
+    code += `graph.add_edge("${idToName.get(edge.source)}", "${idToName.get(edge.target)}")\n`;
   }
 
   return code;
@@ -138,7 +138,7 @@ function generateAddEdge(edges: GraphEdge[]): string {
  * Generate add_conditional_edges code
  * Task 6.7: Implement add_conditional_edges code generation
  */
-function generateAddConditionalEdges(edges: GraphEdge[]): string {
+function generateAddConditionalEdges(edges: GraphEdge[], idToName: Map<string, string>): string {
   const conditionalEdges = edges.filter(e => e.type === 'conditional');
   
   if (conditionalEdges.length === 0) {
@@ -157,8 +157,8 @@ function generateAddConditionalEdges(edges: GraphEdge[]): string {
   let code = '';
   for (const [source, sourceEdges] of edgesBySource) {
     const conditionName = sourceEdges[0].condition || 'route';
-    const targets = sourceEdges.map(e => `"${e.target}"`).join(', ');
-    code += `graph.add_conditional_edges("${source}", ${conditionName}, [${targets}])\n`;
+    const targets = sourceEdges.map(e => `"${idToName.get(e.target)}"`).join(', ');
+    code += `graph.add_conditional_edges("${idToName.get(source)}", ${conditionName}, [${targets}])\n`;
   }
 
   return code;
@@ -168,7 +168,7 @@ function generateAddConditionalEdges(edges: GraphEdge[]): string {
  * Generate graph building code
  * Task 6.5: Implement graph building code generation
  */
-function generateGraphBuild(nodes: GraphNode[], edges: GraphEdge[]): string {
+function generateGraphBuild(nodes: GraphNode[], edges: GraphEdge[], idToName: Map<string, string>): string {
   let code = '# Build the graph\n';
   code += 'graph = StateGraph(GraphState)\n\n';
   
@@ -181,8 +181,8 @@ function generateGraphBuild(nodes: GraphNode[], edges: GraphEdge[]): string {
   
   // Add edges
   code += '# Add edges\n';
-  code += generateAddEdge(edges);
-  code += generateAddConditionalEdges(edges);
+  code += generateAddEdge(edges, idToName);
+  code += generateAddConditionalEdges(edges, idToName);
   
   // Set entry point (first node or START node)
   const entryNode = nodes.find(n => n.data.name.toLowerCase() === 'start') || nodes[0];
@@ -206,6 +206,12 @@ function generateGraphBuild(nodes: GraphNode[], edges: GraphEdge[]): string {
 export function generateLangGraphCode(document: GraphDocument): string {
   const { stateSchema, nodes, edges } = document;
 
+  // Create ID to name mapping
+  const idToName = new Map<string, string>();
+  document.nodes.forEach(node => {
+    idToName.set(node.id, node.data.name);
+  });
+
   let code = '';
   
   // Imports
@@ -226,7 +232,7 @@ export function generateLangGraphCode(document: GraphDocument): string {
   }
 
   // Graph building
-  code += generateGraphBuild(nodes, edges);
+  code += generateGraphBuild(nodes, edges, idToName);
 
   return code;
 }

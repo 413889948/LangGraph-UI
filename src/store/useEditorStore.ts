@@ -9,10 +9,32 @@
  */
 
 import { create } from 'zustand';
-import { EdgeUpdate, GraphDocument, GraphEdge, ViewportState, GraphNode, StateField, StateFieldUpdate } from '../types';
+import { EdgeUpdate, GraphDocument, GraphEdge, ViewportState, GraphNode, StateField, StateFieldUpdate, NodeType } from '../types';
 
 // localStorage key for locale persistence
 const LOCALE_STORAGE_KEY = 'langgraph-editor-locale';
+const GRAPH_STORAGE_KEY = 'langgraph-graph-document';
+
+let saveTimeoutId: ReturnType<typeof setTimeout> | null = null;
+let quotaWarningShown = false;
+
+const debouncedSave = (doc: GraphDocument) => {
+  if (saveTimeoutId) {
+    clearTimeout(saveTimeoutId);
+  }
+
+  saveTimeoutId = setTimeout(() => {
+    try {
+      localStorage.setItem(GRAPH_STORAGE_KEY, JSON.stringify(doc));
+      useEditorStore.getState().markClean();
+    } catch (e: any) {
+      if (e.name === 'QuotaExceededError' && !quotaWarningShown) {
+        quotaWarningShown = true;
+        alert('存储空间已满，自动保存已禁用。请导出备份后清理浏览器存储。');
+      }
+    }
+  }, 1000);
+};
 
 // Supported locales
 export type Locale = 'zh' | 'en';
@@ -48,6 +70,19 @@ interface EditorState {
   
   // Persistence tracking
   isDirty: boolean;
+
+  // Undo/redo history
+  history: {
+    past: GraphDocument[];
+    future: GraphDocument[];
+  };
+
+  // Semantic node naming counters
+  nodeNamingCounters: {
+    function: number;
+    tool: number;
+    subgraph: number;
+  };
   
   // i18n state
   locale: Locale;
@@ -99,6 +134,15 @@ interface EditorActions {
   // Persistence operations
   markDirty: () => void;
   markClean: () => void;
+
+  // Undo/redo operations
+  undo: () => void;
+  redo: () => void;
+  clearHistory: () => void;
+
+  // Semantic node naming operations
+  getNextNodeName: (type: NodeType) => string;
+  resetNodeNaming: (doc: GraphDocument) => void;
   
   // i18n operations
   setLocale: (locale: Locale) => void;
@@ -133,21 +177,62 @@ const createDefaultGraphDocument = (): GraphDocument => ({
   viewport: { ...INITIAL_VIEWPORT },
 });
 
+const getInitialGraphDocument = (): GraphDocument | null => {
+  try {
+    const storedDoc = localStorage.getItem(GRAPH_STORAGE_KEY);
+    if (!storedDoc) {
+      return null;
+    }
+    return JSON.parse(storedDoc) as GraphDocument;
+  } catch {
+    return null;
+  }
+};
+
+const initialDoc = getInitialGraphDocument();
+const MAX_HISTORY = 20;
+
+const cloneGraphDocument = (doc: GraphDocument): GraphDocument => {
+  return JSON.parse(JSON.stringify(doc)) as GraphDocument;
+};
+
+const addToHistory = (doc: GraphDocument) => {
+  const state = useEditorStore.getState();
+  const newPast = [...state.history.past, cloneGraphDocument(doc)].slice(-MAX_HISTORY);
+
+  useEditorStore.setState({
+    history: {
+      past: newPast,
+      future: [],
+    },
+  });
+};
+
 /**
  * Editor Zustand store
  */
 export const useEditorStore = create<EditorState & EditorActions>((set, get) => ({
   // Initial state
-  graphDocument: null,
+  graphDocument: initialDoc,
   selectedNodeId: null,
   selectedElementId: null,
   viewport: { ...INITIAL_VIEWPORT },
   isDirty: false,
+  history: {
+    past: [],
+    future: [],
+  },
+  nodeNamingCounters: {
+    function: 0,
+    tool: 0,
+    subgraph: 0,
+  },
   locale: getStoredLocale(),
   
   // Graph document operations
   setGraphDocument: (doc) => {
     set({ graphDocument: doc, isDirty: false });
+    get().clearHistory();
   },
   
   resetGraphDocument: () => {
@@ -157,10 +242,20 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       selectedElementId: null,
       viewport: { ...INITIAL_VIEWPORT },
       isDirty: false,
+      nodeNamingCounters: {
+        function: 0,
+        tool: 0,
+        subgraph: 0,
+      },
     });
+    get().clearHistory();
   },
   // Node CRUD operations
   addNode: (node) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => ({
       graphDocument: state.graphDocument ? {
         ...state.graphDocument,
@@ -168,9 +263,17 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       } : null,
     }));
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
   
   updateNode: (nodeId, updates) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => ({
       graphDocument: state.graphDocument ? {
         ...state.graphDocument,
@@ -180,9 +283,17 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       } : null,
     }));
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
   
   removeNode: (nodeId) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => {
       // Clear selection if the removed node was selected
       const shouldClearSelection = state.selectedNodeId === nodeId || state.selectedElementId === nodeId;
@@ -201,6 +312,10 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       };
     });
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
   
   getNodeById: (nodeId) => {
@@ -210,6 +325,10 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
   
   // Edge CRUD operations
   addEdge: (edge) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => ({
       graphDocument: state.graphDocument ? {
         ...state.graphDocument,
@@ -217,9 +336,17 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       } : null,
     }));
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
   
   updateEdge: (edgeId, updates) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => ({
       graphDocument: state.graphDocument ? {
         ...state.graphDocument,
@@ -229,9 +356,17 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       } : null,
     }));
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
   
   removeEdge: (edgeId) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => {
       // Clear selection if the removed edge was selected
       const shouldClearSelection = state.selectedElementId === edgeId;
@@ -245,6 +380,10 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       };
     });
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
   
   getEdgeById: (edgeId) => {
@@ -383,9 +522,112 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
   markClean: () => {
     set({ isDirty: false });
   },
+
+  undo: () => {
+    const state = get();
+    if (!state.graphDocument || state.history.past.length === 0) {
+      return;
+    }
+
+    const previous = state.history.past[state.history.past.length - 1];
+    const newPast = state.history.past.slice(0, -1);
+
+    set({
+      graphDocument: cloneGraphDocument(previous),
+      history: {
+        past: newPast,
+        future: [cloneGraphDocument(state.graphDocument), ...state.history.future],
+      },
+      selectedNodeId: null,
+      selectedElementId: null,
+      isDirty: true,
+    });
+  },
+
+  redo: () => {
+    const state = get();
+    if (!state.graphDocument || state.history.future.length === 0) {
+      return;
+    }
+
+    const next = state.history.future[0];
+    const newFuture = state.history.future.slice(1);
+
+    addToHistory(state.graphDocument);
+
+    set({
+      graphDocument: cloneGraphDocument(next),
+      history: {
+        past: get().history.past,
+        future: newFuture,
+      },
+      selectedNodeId: null,
+      selectedElementId: null,
+      isDirty: true,
+    });
+  },
+
+  clearHistory: () => {
+    set({
+      history: {
+        past: [],
+        future: [],
+      },
+    });
+  },
+
+  getNextNodeName: (type) => {
+    let nextName = '';
+    const prefixByType: Record<NodeType, 'fun' | 'tool' | 'subgraph'> = {
+      function: 'fun',
+      tool: 'tool',
+      subgraph: 'subgraph',
+    };
+
+    set((state) => {
+      const nextCount = state.nodeNamingCounters[type] + 1;
+      nextName = `${prefixByType[type]}_${nextCount}`;
+
+      return {
+        nodeNamingCounters: {
+          ...state.nodeNamingCounters,
+          [type]: nextCount,
+        },
+      };
+    });
+
+    return nextName;
+  },
+
+  resetNodeNaming: (doc) => {
+    const counters: Record<NodeType, number> = { function: 0, tool: 0, subgraph: 0 };
+    const prefixMap: Record<'fun' | 'tool' | 'subgraph', NodeType> = {
+      fun: 'function',
+      tool: 'tool',
+      subgraph: 'subgraph',
+    };
+
+    doc.nodes.forEach((node) => {
+      const match = node.data.name.match(/^(fun|tool|subgraph)_(\d+)$/);
+      if (!match) {
+        return;
+      }
+
+      const prefix = match[1] as 'fun' | 'tool' | 'subgraph';
+      const matchedType = prefixMap[prefix];
+      const nodeNumber = Number.parseInt(match[2], 10);
+      counters[matchedType] = Math.max(counters[matchedType], nodeNumber);
+    });
+
+    set({ nodeNamingCounters: counters });
+  },
   
   // State Schema field operations
   addStateField: (field) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => ({
       graphDocument: state.graphDocument ? {
         ...state.graphDocument,
@@ -396,9 +638,17 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       } : null,
     }));
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
 
   updateStateField: (fieldId, updates) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => ({
       graphDocument: state.graphDocument ? {
         ...state.graphDocument,
@@ -411,9 +661,17 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       } : null,
     }));
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
 
   removeStateField: (fieldId) => {
+    const state = get();
+    if (state.graphDocument) {
+      addToHistory(state.graphDocument);
+    }
     set((state) => ({
       graphDocument: state.graphDocument ? {
         ...state.graphDocument,
@@ -424,6 +682,10 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
       } : null,
     }));
     get().markDirty();
+    const graphDocument = get().graphDocument;
+    if (graphDocument) {
+      debouncedSave(graphDocument);
+    }
   },
 
   getStateFieldById: (fieldId) => {
@@ -451,6 +713,7 @@ export const selectSelectedNodeId = (state: EditorState) => state.selectedNodeId
 export const selectSelectedElementId = (state: EditorState) => state.selectedElementId;
 export const selectViewport = (state: EditorState) => state.viewport;
 export const selectIsDirty = (state: EditorState) => state.isDirty;
+export const selectNodeNamingCounters = (state: EditorState) => state.nodeNamingCounters;
 export const selectLocale = (state: EditorState) => state.locale;
 
 /**
